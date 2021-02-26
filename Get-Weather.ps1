@@ -1,5 +1,19 @@
+#Develop enviroment: Visual Studio + PowerShell extension
+
+#Use method 1:
+#Run all code first, then use 'get-weather' to start,
+#Follow instructions, default display format is fotmat-table.
+
+#Use method 2:
+#Run all code first, 'get-help get-weather' would be your best friend,
+#Command format: get-weather [[-location] <string>] [[-days] <int>] [[-unit] <string>] [<CommonParameters>]
+#Example: get-weather -location "Tacoma, WA" -days 3 -unit f
+#There are three format for display, use: ft, fl, out-gridview following by '|' after above.
+
+
 #Function body
-function get-weather {
+Function get-weather {
+
 #Fuction parameter define
 [CmdletBinding()] #<<-- This turns a regular function into an advanced function
       param(#user define value
