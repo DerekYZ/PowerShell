@@ -1,28 +1,35 @@
 #Convert Kelvin, Farhenheit and Celsius
 
-#ask user input unit and value
-[string][ValidateSet("c","f","k")]$unit = Read-Host "Please provide Unit of measurement (C, K or F) "
-[float]$value = read-host "Please provide value for measurement"
-
+#check input unit other than k/f/c
+do {[string]$unit = Read-Host "Please provide Unit of measurement (C, K or F):>"}
+while ($unit -ne "k" -and $unit -ne "f" -and $unit -ne "c") 
+#set limit
+[float]$limitk = 0
+[float]$limitf = -459.7
+[float]$limitc = -273.16
+[float]$value = read-host "Please provide value for measurement:>"
 #converting
-if ($unit -eq "k") {
-    $kelvin = $value;
-    $farhenheit = ($value-273.15)*9/5+32;
-    $celsius = $value-273.15;
+switch ($unit) {
+    {($_ -eq "k") -and ($value -ge $limitk)} {
+        $kelvin = $value;
+        $farhenheit = ($value-273.15)*9/5+32;
+        $celsius = $value-273.15;
     }
-
-    else {
-        if ($unit -eq "f") {
-            $kelvin = ($value-32)*5/9+273.15;
-            $farhenheit = $value;
-            $celsius = ($value-32)*5/9;
-            }
-
-         else { $kelvin = $value+273.15;
-                $farhenheit = $value*9/5+32;
-                $celsius = $value;
-                }
-        }
+    {($_ -eq "f") -and ($value -ge $limitf)} {
+        $kelvin = ($value-32)*5/9+273.15;
+        $farhenheit = $value;
+        $celsius = ($value-32)*5/9;
+    }
+    {($_ -eq "c") -and ($value -ge $limitc)} {
+        $kelvin = $value+273.15;
+        $farhenheit = $value*9/5+32;
+        $celsius = $value;   
+    }
+    default {
+    write-host ("Invalid input value, minimum 0 K/ -273.16 C/ -459.7 F. Your input:"+$value+$unit);
+    exit;
+    }
+}
 #send value to array
 $result = @( 
     [pscustomobject]@{
@@ -33,5 +40,3 @@ $result = @(
     )
 #display array
 $result
-
-#end of sript
